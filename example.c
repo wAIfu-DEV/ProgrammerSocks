@@ -53,7 +53,6 @@ int main()
                 return 0;
             case SOCK_MESSAGE_TEXT:
                 printf("Received: %s\n", message.message_text.buffer);
-                sock_free_message(&message);
                 break;
             case SOCK_MESSAGE_BINARY:
                 printf("Received binary message.\n");
@@ -62,6 +61,7 @@ int main()
             default:
                 break;
             }
+            sock_free_message(&message);
         }
     }
 

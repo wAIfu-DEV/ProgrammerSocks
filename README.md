@@ -19,7 +19,7 @@ int main()
     // Send messages to server
     sock_send_text(&sock, "This is a test text frame");
 
-    // Check for new messages
+    // Check for new messages (non-blocking)
     while (!sock_poll(&sock))
     {
         // Check if we have new messages

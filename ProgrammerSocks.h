@@ -59,8 +59,8 @@ typedef enum __sock_message_type
 {
     SOCK_MESSAGE_NONE,
     SOCK_MESSAGE_CLOSE,
-    SOCK_MESSAGE_TYPE_UTF8,
-    SOCK_MESSAGE_TYPE_BINARY,
+    SOCK_MESSAGE_TEXT,
+    SOCK_MESSAGE_BINARY,
 
 } SOCK_MESSAGE_TYPE;
 
@@ -75,13 +75,13 @@ typedef union __sock_message
         uint64_t close_code;
     } message_close_frame;
 
-    struct __sock_message_utf8
+    struct __sock_message_text
     {
         SOCK_MESSAGE_TYPE type;
         char *buffer;
         uint64_t length;
         int needs_freeing;
-    } message_utf8;
+    } message_text;
 
     struct __sock_message_bin
     {
@@ -731,7 +731,7 @@ void __sock_make_message(
     case __SOCK_WS_OPCODE_BINARY:
         (*out_message) = (SOCK_MESSAGE){
             .message_binary = {
-                .type = SOCK_MESSAGE_TYPE_BINARY,
+                .type = SOCK_MESSAGE_BINARY,
                 .buffer = frame->payload,
                 .length = frame->payload_length,
                 .needs_freeing = 0,
@@ -740,8 +740,8 @@ void __sock_make_message(
         break;
     case __SOCK_WS_OPCODE_TEXT:
         (*out_message) = (SOCK_MESSAGE){
-            .message_utf8 = {
-                .type = SOCK_MESSAGE_TYPE_UTF8,
+            .message_text = {
+                .type = SOCK_MESSAGE_TEXT,
                 .buffer = (char *)frame->payload,
                 .length = frame->payload_length,
                 .needs_freeing = 0,
@@ -1007,14 +1007,14 @@ void sock_free_message(SOCK_MESSAGE *message)
 {
     __sock_debug("sock_free_message");
 
-    if (message->type == SOCK_MESSAGE_TYPE_UTF8 || message->type == SOCK_MESSAGE_TYPE_BINARY)
+    if (message->type == SOCK_MESSAGE_TEXT || message->type == SOCK_MESSAGE_BINARY)
     {
-        if (message->message_utf8.needs_freeing)
+        if (message->message_text.needs_freeing)
         {
-            free(message->message_utf8.buffer);
-            message->message_utf8.buffer = NULL;
-            message->message_utf8.length = 0;
-            message->message_utf8.needs_freeing = 0;
+            free(message->message_text.buffer);
+            message->message_text.buffer = NULL;
+            message->message_text.length = 0;
+            message->message_text.needs_freeing = 0;
         }
     }
     else if (message->type == SOCK_MESSAGE_CLOSE)

@@ -51,11 +51,11 @@ int main()
                 sock_close(&sock);
                 socks_end();
                 return 0;
-            case SOCK_MESSAGE_TYPE_UTF8:
-                printf("Received: %s\n", message.message_utf8.buffer);
+            case SOCK_MESSAGE_TEXT:
+                printf("Received: %s\n", message.message_text.buffer);
                 sock_free_message(&message);
                 break;
-            case SOCK_MESSAGE_TYPE_BINARY:
+            case SOCK_MESSAGE_BINARY:
                 printf("Received binary message.\n");
                 break;
 

@@ -43,6 +43,7 @@ int main()
     socks_end();
     return 0;
 }
+// This is an example with little to no error handling, for real-world usage see example.c
 ```
 
 ## Important

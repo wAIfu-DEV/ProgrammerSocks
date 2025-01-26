@@ -14,7 +14,7 @@ int main()
 
     // Connect to port 4263 of localhost
     SOCK sock;
-    sock_err_t err = sock_connect("localhost", 4263, "route/socket", "username", "password", &sock);
+    sock_connect("localhost", 4263, "route/socket", "username", "password", &sock);
 
     // Send messages to server
     sock_send_text(&sock, "This is a test text frame");
@@ -27,7 +27,7 @@ int main()
         {
             // Get message at front of queue
             SOCK_MESSAGE message;
-            sock_err_t err = sock_get_message(&sock, &message);
+            sock_get_message(&sock, &message);
 
             if (message.type == SOCK_MESSAGE_TEXT)
             {

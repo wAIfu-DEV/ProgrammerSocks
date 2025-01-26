@@ -1,0 +1,1 @@
+clang -g example.c -o out.exe -Ofast -std=c17 -ladvapi32

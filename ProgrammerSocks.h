@@ -667,6 +667,7 @@ sock_err_t sock_connect(
     char *found = strstr(response_buffer, "101 Switching Protocols");
     if (found == NULL)
     {
+        __sock_printerr("Handshake response failed.\n");
         return SOCK_ERR_FAILURE;
     }
 
@@ -803,7 +804,8 @@ sock_err_t __sock_add_message(SOCK *s, __WS_FRAME *frame)
         .type = SOCK_MESSAGE_NONE,
     };
 
-    if (frame->opcode != __SOCK_WS_OPCODE_CONTINUATION && (frame->opcode == __SOCK_WS_OPCODE_TEXT || frame->opcode == __SOCK_WS_OPCODE_BINARY))
+    if (frame->opcode != __SOCK_WS_OPCODE_CONTINUATION &&
+        (frame->opcode == __SOCK_WS_OPCODE_TEXT || frame->opcode == __SOCK_WS_OPCODE_BINARY))
     {
         s->last_message_type = frame->opcode;
     }
@@ -1186,7 +1188,7 @@ sock_err_t sock_poll(SOCK *sock)
                                                              &frame);
             if (decoded_bytes == -1)
             {
-                __sock_debug("Could not parse frame. This may indicate a buffer filed completely.\n");
+                __sock_debug("Could not parse frame. This may indicate a buffer filled completely.\n");
                 return SOCK_ERR_SUCCESS;
             }
 

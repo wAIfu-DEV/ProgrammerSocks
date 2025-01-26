@@ -537,6 +537,12 @@ sock_err_t sock_connect(
 {
     __sock_debug("sock_connect");
 
+    if (out_socket == NULL)
+    {
+        __sock_printerr("sock_connect failed, out_socket is NULL.\n");
+        return SOCK_ERR_ARGUMENTS;
+    }
+
     (*out_socket) = (SOCK){
         .socket = (SOCKET)NULL,
         .recv_buffer = NULL,
